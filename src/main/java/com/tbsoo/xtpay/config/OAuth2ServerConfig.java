@@ -26,9 +26,17 @@ public class OAuth2ServerConfig {
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).and()
-                .requestMatchers().anyRequest().and().anonymous().and().authorizeRequests()
-                .antMatchers("/order/**").authenticated();
+            http
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .and()
+                    .requestMatchers()
+                    .anyRequest()
+                    .and()
+                    .anonymous()
+                    .and()
+                    .authorizeRequests()
+                    .antMatchers("/order/**").authenticated();
 
         }
 
@@ -54,8 +62,10 @@ public class OAuth2ServerConfig {
                     .inMemory()
                     .withClient("client_1")
                     .resourceIds(DEMO_RESOURCE_ID)
-                    .authorizedGrantTypes("password", "refresh_token").scopes("select")
-                    .authorities("client").secret("123456");
+                    .authorizedGrantTypes("password", "refresh_token")
+                    .scopes("select")
+                    .authorities("client")
+                    .secret("123456");
         }
 
         @Override
