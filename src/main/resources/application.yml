@@ -5,9 +5,13 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.30.203:3306/db18_xtpay?characterEncoding=utf8
+    url: jdbc:mysql://192.168.30.203:3306/test0323?characterEncoding=utf8
     username: root
     password: pgc%DB112
+#    url: jdbc:mysql://10.9.4.21:3306/db_pcjr?characterEncoding=utf8
+#    username: pcjrwww
+#    password: Q1wApnKbhVPP8KYsXvc9
+
 
   redis:
     host: 127.0.0.1
@@ -17,6 +21,10 @@ security:
   oauth2:
     resource:
       filter-order: 3
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
 
 
 

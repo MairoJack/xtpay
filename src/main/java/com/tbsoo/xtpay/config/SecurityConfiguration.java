@@ -1,6 +1,6 @@
 package com.tbsoo.xtpay.config;
 
-import com.tbsoo.xtpay.service.impl.MemberDetailService;
+import com.tbsoo.xtpay.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private MemberDetailService memberDetailService;
+    private UserDetailServiceImpl userDetailService;
 
     @Bean
     protected PasswordEncoder passwordEncoder(){
@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(memberDetailService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 
     @Override

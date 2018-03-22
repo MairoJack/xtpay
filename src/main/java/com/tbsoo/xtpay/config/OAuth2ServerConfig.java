@@ -1,6 +1,7 @@
 package com.tbsoo.xtpay.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,9 +25,20 @@ public class OAuth2ServerConfig {
     @EnableResourceServer
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
+        @Autowired
+        private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+        @Autowired
+        private CustomLogoutSuccessHandler customLogoutSuccessHandler;
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http
+                    .exceptionHandling()
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .and()
+                    .logout()
+                    .logoutSuccessHandler(customLogoutSuccessHandler)
+                    .logoutUrl("/oauth/logout")
+                    .and()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                     .and()
@@ -36,7 +48,7 @@ public class OAuth2ServerConfig {
                     .anonymous()
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/order/**").authenticated();
+                    .antMatchers("/agent/**").authenticated();
 
         }
 
@@ -56,6 +68,10 @@ public class OAuth2ServerConfig {
         @Autowired
         RedisConnectionFactory redisConnectionFactory;
 
+        @Bean
+        protected RedisTokenStore redisTokenStore(){
+            return new RedisTokenStore(redisConnectionFactory);
+        }
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients
@@ -70,7 +86,7 @@ public class OAuth2ServerConfig {
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-            endpoints.tokenStore(new RedisTokenStore(redisConnectionFactory))
+            endpoints.tokenStore(redisTokenStore())
                 .authenticationManager(authenticationManager);
         }
 

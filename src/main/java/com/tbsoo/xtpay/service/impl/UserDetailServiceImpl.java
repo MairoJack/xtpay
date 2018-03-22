@@ -1,7 +1,7 @@
 package com.tbsoo.xtpay.service.impl;
 
-import com.tbsoo.xtpay.mapper.MemberMapper;
-import com.tbsoo.xtpay.model.Member;
+import com.tbsoo.xtpay.dao.AgentMapper;
+import com.tbsoo.xtpay.model.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,19 +14,19 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Service("memberDetailService")
-public class MemberDetailService implements UserDetailsService {
+@Service("userDetailService")
+public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private MemberMapper memberMapper;
+    private AgentMapper agentMapper;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        Member member = memberMapper.selectMemberByUsername(s);
+        Agent agent = agentMapper.selectByAgentNo(s);
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("Roles");
         grantedAuthorities.add(grantedAuthority);
-        return new User(member.getUsername(),member.getPassword(),grantedAuthorities);
+        return new User(String.valueOf(agent.getId()),agent.getAgentPassword(),grantedAuthorities);
     }
 }

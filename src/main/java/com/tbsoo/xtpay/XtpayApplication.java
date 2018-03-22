@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan("com.tbsoo.xtpay.mapper")
+@MapperScan("com.tbsoo.xtpay.dao")
 public class XtpayApplication {
 
 	public static void main(String[] args) {
